@@ -53,3 +53,55 @@ f(2, 3, 4)                            // 24
 
 const f = (x, y, z) => (x * y * z);   // 화살표함수는 중괄호 바로 뒤에 return이 올 경우 붙여서 사용할 수 있다. 
                                       // 중괄호랑  return 생략
+
+
+
+
+/*--- 객체 리터럴---*/
+const person = {
+    name: 'ABC',
+    year: 1997,
+    month: 6,
+    date: 15,
+    gender: 'M'
+};                             // {}를 사용해 객체를 표헌하는 것을 객체 리터럴이라고 한다. 
+
+const obj = {
+    nane: 'hello',
+    '1ab': 'hello',            
+    'a b': 'hello',
+    'a_b': 'hello'
+}                              // 속성 이름에 제일 첫글자가 숫자이거나, 공백 또는 틀수문자가 포함되어 있으면 따옴표를 사용한다. 
+
+console.log(person.name)
+console.log(person['name'])    // 리터럴 값에 접근하는 방법
+console.log(obj["1ab"])        
+console.log(obj["a b"])        // 속성 이름을 따옴표로 묶은 경우엔 대괄호만 사용할 수 있다. 
+console.log(person.age)        // undefined
+                               // 없는값에 접근할 경우 undefined를 반환한다.
+
+person.name = 'BCD'
+console.log(person.name)       // BCD
+                               
+/* 객체 속성 제거하기 */
+delete person.name;
+console.log(person.name);      // undefined
+                               // const로 정의되어있지만, 객체 자체를 수정 못할 뿐 객체 내부는 수정할 수 있다. 
+
+/* 배열과 함수가 객체인 이유 */
+function hello() {}
+hello.a = "Hello, ";
+const array = [];
+array.b = "World";
+console.log(hello().a);        // Hello, 
+console.log(array.b);          // World
+                               // 배열과 함수가 객체인 이뉴는 객체의 성질을 모두 다 사용하기 때문이다. 
+                               // 함수와 배열에서도 속성을 추가 수정 제거할 수 있다. 
+
+/* 매서드 */
+const A = {
+   log: function(value) {      // 매서드. 객체의 속성 값으로 함수를 넣었을 때 이 속성을 메서드라고 한다. 
+       console.log(value);
+   },
+};                             
+A.log('Hello, World!');        // Hello, World!
