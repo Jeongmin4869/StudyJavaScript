@@ -105,3 +105,25 @@ const A = {
    },
 };                             
 A.log('Hello, World!');        // Hello, World!
+
+/* 객체 간의 비교 */
+'string' === 'string'          // true
+333 === 333                    // true
+null === null                  // true
+{} === {}                      // false. 객체끼리의 비교는 false를 반환한다. 
+                               // 객체는 모양이 같아도 생성할 때마다 새로운 객체가 생성된다. 
+                               // 같은 객체인지 비교하고싶다면 기존 객체를 변수에 저장해두어야 한다. 
+                               // {} 객체리터럴, [] 배열리터럴
+            
+const a = {name : 'ABC'};
+const arr = [1, false, a];
+console.log(a === arr[2])      // true
+
+arr === [1, false, a]          // false. 
+                               // [1, false, a]는 arr이 아니고, 새로 만들어진 객체이기 때문이다. 
+
+/* 참조와 복사 */
+const a = {name : 'ABC'};
+const b = a;
+a.name = 'DEF';
+console.log(b.name);           // DEF 
