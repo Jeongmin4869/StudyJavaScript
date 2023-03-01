@@ -13,8 +13,28 @@
 <button>입력</button>
 <script>
 const number = parseInt(prompt("몇 명이 참가하나요?"), 10);
-alert(number);
-const yesOrNo = confirm('맞나요?');
+const $button = document.querySelector('button');
+const $input = document.querySelector('input');
+const $word = document.querySelector('#word');
+let word;
+let newWord;
+
+const onClickButton = () => {
+  if(!word){
+    word = newWord;
+    $word.textContent = word;
+    $input.value = '';
+  }
+  else {
+
+  }
+};
+const onInput = (event) => {
+    newWord = event.target.value;
+};
+
+$button.addEventListener('click', onClickButton);
+$input.addEventListener('input', onInput);
 </script>
 </body>
 </html>
