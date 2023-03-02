@@ -13,28 +13,43 @@
 <button>입력</button>
 <script>
 const number = parseInt(prompt("몇 명이 참가하나요?"), 10);
-const $button = document.querySelector('button');
-const $input = document.querySelector('input');
-const $word = document.querySelector('#word');
-let word;
-let newWord;
 
-const onClickButton = () => {
-  if(!word){
-    word = newWord;
-    $word.textContent = word;
+if (number) {
+  
+  const $button = document.querySelector('button');
+  const $input = document.querySelector('input');
+  const $word = document.querySelector('#word');
+  const $order = document.querySelector('#order');
+
+  let word;
+  let newWord;
+
+  const onClickButton = () => {
+    if(!word || (word[word.length-1] === newWord[0] && newWord.length === 3 )){
+      word = newWord;
+      $word.textContent = word;
+      const order = parseInt($order.textContent)
+      if(order + 1 > number){
+        $order.textContent = '1'
+      }
+      else {
+        $order.textContent = order + 1
+      }
+    }
+    else {
+      alert("올바르지 않은 문자입니다!")
+    }
     $input.value = '';
-  }
-  else {
+    $input.focus();
+  };
 
-  }
-};
-const onInput = (event) => {
-    newWord = event.target.value;
-};
+  const onInput = (event) => {
+      newWord = event.target.value;
+  };
 
-$button.addEventListener('click', onClickButton);
-$input.addEventListener('input', onInput);
+  $button.addEventListener('click', onClickButton);
+  $input.addEventListener('input', onInput);
+}
 </script>
 </body>
 </html>
