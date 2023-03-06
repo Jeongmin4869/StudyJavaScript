@@ -15,12 +15,12 @@
 <!-- 계산기 버튼 구현 -->
 <body>
   <input readonly id = "operator">
-  <input readonly type="number" id="result">
+  <input readonly type="number" id = "result">
   <div class="row">
-    <button id = "num-7">7</button>
-    <button id = "num-8">8</button>
-    <button id = "num-9">9</button>
-    <button id = "plus">+</button>
+    <button id="num-7">7</button>
+    <button id="num-8">8</button>
+    <button id="num-9">9</button>
+    <button id="plus">+</button>
   </div>  
   <div class="row">
     <button id = "num-4">4</button>
@@ -43,16 +43,19 @@
 <script>
   let numOne = '';
   let operator = '';
-  let nomTwo = '';
+  let numTwo = '';
   const $operator = document.querySelector('#operator');
   const $result = document.querySelector('#result');
 
   const onClickNumber = (event) => {
     if(operator){
-      nomTwo += event.target.textContent;
+      if(!numTwo){
+        $result.value = '';
+      }
+      numTwo += event.target.textContent;
     }
     else {
-      nomOne += event.target.textContent;
+      numOne += event.target.textContent;
     }
     $result.value += event.target.textContent;
   }; // event 객체
