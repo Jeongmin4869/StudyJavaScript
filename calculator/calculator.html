@@ -15,7 +15,7 @@
 <!-- 계산기 버튼 구현 -->
 <body>
   <input readonly id = "operator">
-  <input readonly type="number" id = "result">
+  <input readonly id = "result">
   <div class="row">
     <button id="num-7">7</button>
     <button id="num-8">8</button>
@@ -44,13 +44,15 @@
   let numOne = '';
   let operator = '';
   let numTwo = '';
-  const $operator = document.querySelector('#operator');
   const $result = document.querySelector('#result');
+  const $operator = document.querySelector('#operator');
+  
 
   const onClickNumber = (event) => {
+  
     if(!operator){
-      numOne += event.target.textContent;
       $result.value += event.target.textContent;
+      numOne = $result.value;
       return;
     }
     
@@ -58,7 +60,7 @@
       $result.value = '';
     }
     numTwo += event.target.textContent;
-    //$result.value += event.target.textContent;
+    $result.value += event.target.textContent;
   }; // event 객체 
   document.querySelector('#num-0').addEventListener('click', onClickNumber); 
   document.querySelector('#num-1').addEventListener('click', onClickNumber); 
@@ -72,8 +74,6 @@
   document.querySelector('#num-9').addEventListener('click', onClickNumber); 
 
   const onClickOperator = (op) => () => {
-    $result.value = 'sss';
-    return;
     if(numTwo){
       switch(operator){
         case '+':
@@ -96,14 +96,12 @@
     }
 
     if(op){
-      if(op==='x'){
-        $result.value = operator;
-        alert($result.value);
+      if(op === '-' && !numOne){
+        $result.value = op;
         return;
       }
       operator = op;
       $operator.value = operator;
-      alert($operator.value);
     }
 
   }; // 고차합수
@@ -118,13 +116,13 @@
           $result.value = parseInt(numOne) + parseInt(numTwo);
           break;
         case '-':
-          $result.value = numOne - numTwo;
+          $result.value = parseInt(numOne) - parseInt(numTwo);
           break;
         case 'x':
-          $result.value = numOne * numTwo;
+          $result.value = parseInt(numOne) * parseInt(numTwo);
           break;
         case '/':
-          $result.value = numOne / numTwo;
+          $result.value = parseInt(numOne) / parseInt(numTwo);
           break;
         default:
           break;
