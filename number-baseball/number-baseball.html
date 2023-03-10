@@ -15,6 +15,31 @@
 const $input = document.querySelector("#input");
 const $form = document.querySelector("#form");
 const $logs = document.querySelector("#logs");
+
+const numbers = [];
+for(let i=0; i<9; i++){
+  numbers.push(i+1);
+}
+
+const answer = [];
+for(let i=0; i<4; i++){
+  const index = Math.floor(Math.random() * numbers.length);
+  answer.push(numbers[index]);
+  numbers.splice(index,1);
+}
+
+$form.addEventListener('submit', (event) =>{
+  event.preventDefault(); // 기본동작 막기
+  console.log('서브밋', event);
+});
+
+const homerun = 0;
+const hit = 0;
+while(1){
+  break;
+}
+
+
 </script>
 </body>
 </html>
