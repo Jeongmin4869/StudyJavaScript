@@ -28,17 +28,31 @@ for(let i=0; i<4; i++){
   numbers.splice(index,1);
 }
 
-$form.addEventListener('submit', (event) =>{
-  event.preventDefault(); // 기본동작 막기
-  console.log('서브밋', event);
-});
-
-const homerun = 0;
-const hit = 0;
-while(1){
-  break;
+const tries = [];
+function checkInput(input) {
+  if(input.length !== 4) {
+    return alert("4자리 숫자를 입력해주세요");
+  }
+  if(new Set(input).size !== 4){
+    return alert("중복되지 않은 값들을 입력해주세요");
+  }
+  if(tries.includes(input)){
+    return alert("이미 시도한 값입니다");
+  }
+  return true;
 }
 
+$form.addEventListener('submit', (event)=> {
+    event.preventDefault();
+    const value = $input.value;
+    $input.value = '';
+    if(checkInput(value)){
+      tries.push(value);
+    }
+    else{
+      // 에러
+    }
+});
 
 </script>
 </body>
