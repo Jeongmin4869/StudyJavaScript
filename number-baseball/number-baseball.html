@@ -83,8 +83,7 @@ $form.addEventListener('submit', (event)=> {
   //몇 스트라이크 검사
   if(strike === 0 && ball === 0){
     out ++;
-    $logs.append( `${value}: ${out} 아웃!`, document.createElement('br'));
-    //$logs.innerHTML = '<font color = "red"> ${value}: ${out} 아웃! </font>';
+    $logs.innerHTML += '<font color = "red">' +  value + " : " + out  + ' 아웃! </font></br>';
   }
   else {
 
