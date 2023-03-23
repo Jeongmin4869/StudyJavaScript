@@ -31,7 +31,9 @@
     shuffle.push(value);
   }
   console.log(shuffle);
-
+  const winBalls = shuffle.slice(0, 6).sort((a,b) => a-b ); // 순서대로 정렬
+  const bonus = shuffle[6];
+  console.log(winBalls, bonus);
 </script>
 </body>
 </html>
