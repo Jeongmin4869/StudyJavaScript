@@ -45,10 +45,24 @@
     $target.appendChild($ball);
   }
 
+  /* let 사용 */
+  /*
   for(let i = 0; i<winBalls.length; i++){
     setTimeout(() => {
+      console.log(winBalls[i], i);
       showBall(winBalls[i], $result);
     }, (i+1) * 1000); // 1000 = 1초
+  }
+ */
+
+  /* var 사용 */
+  for(var i = 0; i<winBalls.length; i++){
+    (function(j) {
+      setTimeout(() => {
+        console.log(winBalls[j], j);
+        showBall(winBalls[j], $result);
+      }, (i+1) * 1000); // 1000 = 1초
+    })(i);
   }
 
   setTimeout(() => {
