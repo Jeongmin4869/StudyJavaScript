@@ -19,9 +19,14 @@
   </style>
 </head>
 <body>
-<div id = "result"> 추첨 결과는? </div>
-<div id = "bonus"> 보너스 : </div>
+<div id = "result"> 추첨 번호 : </div>
+<div id = "bonus"> 보너스 : </div></br>
+<div id = "playerNum"> 추첨 결과 : </div>
 <script>
+
+  const playerNum = parseInt(prompt("추첨번호를 입력하세요"), 10);
+
+
   const candidate = Array(45).fill().map((v, i) => i + 1);
   const shuffle = [];
   while (candidate.length > 0){
