@@ -14,20 +14,42 @@
 <body>
 <div id="computer"></div>
 <div>
-    <button id="scissors" class="btn">Scissors</button>
-    <button id="rock" class="btn">Rock</button>
-    <button id="paper" class="btn">Paper</button>
+  <button id="scissors" class="btn">Scissors</button>
+  <button id="rock" class="btn">Rock</button>
+  <button id="paper" class="btn">Paper</button>
 </div>
 <div id="score">0</div>
 <script>
-    const $computer = document.querySelector("#computer");
-    const $score = document.querySelector("#score");
-    const $rock = document.querySelector("#rock");
-    const $scissors = document.querySelector("#scissors");
-    const $papper = document.querySelector("#paper");
-    const IMG_URL = './rps.png';
-    $computer.style.background = `url(${IMG_URL}) 0 0`;
+  const $computer = document.querySelector("#computer");
+  const $score = document.querySelector("#score");
+  const $rock = document.querySelector("#rock");
+  const $scissors = document.querySelector("#scissors");
+  const $papper = document.querySelector("#paper");
+  const IMG_URL = './rps.png';
+  $computer.style.background = `url(${IMG_URL}) 0 0`;
+  $computer.style.backgroundSize = 'auto 200px';
+
+  const rpsX = {
+    scissors: '0', //가위
+    rock: '-220px', //바위
+    paper: '-440px' // 보
+  };
+
+  let computerChoice = 'scissors';
+  setInterval( () => {
+    if(computerChoice === 'scissors'){ // 가위
+      computerChoice = 'rock';
+    }
+    else if (computerChoice === 'rock'){ // 바위
+      computerChoice = 'paper';
+    }
+    else if (computerChoice === 'paper'){ // 보
+      computerChoice = 'scissors';
+    } 
+    $computer.style.background = `url(${IMG_URL}) ${rpsX[computerChoice]} 0`;
     $computer.style.backgroundSize = 'auto 200px';
+  }, 50);
+
 </script>
 </body>
-</html>
+</html> 
