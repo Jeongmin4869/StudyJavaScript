@@ -36,7 +36,7 @@
   };
 
   let computerChoice = 'scissors';
-  setInterval( () => {
+    const changeComputerHand = () => {
     if(computerChoice === 'scissors'){ // 가위
       computerChoice = 'rock';
     }
@@ -48,7 +48,20 @@
     } 
     $computer.style.background = `url(${IMG_URL}) ${rpsX[computerChoice]} 0`;
     $computer.style.backgroundSize = 'auto 200px';
-  }, 50);
+  }
+  let intervalId = setInterval( changeComputerHand, 50);
+
+  const clickButton = () => {
+    clearInterval(intervalId);
+    setTimeout( () => {
+      clearInterval(intervalId); // 이전의 clearInterval과 실행시간이 다르다. (1초)
+                                 // intervalId가 남아있다면, 제거한다. 
+      intervalId = setInterval(changeComputerHand, 50);
+    }, 1000);
+  };
+  $rock.addEventListener('click', clickButton);
+  $scissors.addEventListener('click', clickButton);
+  $papper.addEventListener('click', clickButton);
 
 </script>
 </body>
