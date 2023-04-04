@@ -51,13 +51,43 @@
   }
   let intervalId = setInterval( changeComputerHand, 50);
 
+  const scoreTable = {
+    rock : 0,
+    scissors : 1,
+    paper : -1,
+  };
+
+  let clickable = true; // flag 변수 역할
   const clickButton = () => {
-    clearInterval(intervalId);
-    setTimeout( () => {
-      clearInterval(intervalId); // 이전의 clearInterval과 실행시간이 다르다. (1초)
-                                 // intervalId가 남아있다면, 제거한다. 
-      intervalId = setInterval(changeComputerHand, 50);
-    }, 1000);
+    if(clickable){
+      clearInterval(intervalId);
+      clickable = false;
+
+      const myChoice = event.target.id === 'rock'
+        ? 'rock'
+          : event.target.id == 'scissors'
+            ? 'scissors'
+              : 'paper';
+      
+      const myScore = scoreTable[myChoice];
+      const computerScore = scoreTable[computerChoice];
+      diff = myScore - computerScore;
+
+      if([2, -1].includes(diff)){
+        console.log('승리');  
+      }else if ([-2, 1].includes(diff)){
+        console.log('패배');
+      }else if (diff === 0){
+        console.log('무승부');
+      }
+      
+      setTimeout( () => {
+        clickable = true;
+        clearInterval(intervalId); // 이전의 clearInterval과 실행시간이 다르다. (1초)
+                                  // intervalId가 남아있다면, 제거한다. 
+        intervalId = setInterval(changeComputerHand, 50);
+      }, 1000);
+    }
   };
   $rock.addEventListener('click', clickButton);
   $scissors.addEventListener('click', clickButton);
