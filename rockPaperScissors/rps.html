@@ -58,11 +58,14 @@
   };
 
   let clickable = true; // flag 변수 역할
+  let computer = 0;
+  let me = 0;
   const clickButton = () => {
     if(clickable){
       clearInterval(intervalId);
       clickable = false;
 
+      /* const myChoice = event.target.textContent === 'Rock' */
       const myChoice = event.target.id === 'rock'
         ? 'rock'
           : event.target.id == 'scissors'
@@ -73,20 +76,37 @@
       const computerScore = scoreTable[computerChoice];
       diff = myScore - computerScore;
 
+      let message;
+      // 2, -1 은 승리조건
+      // -2 ,1 은 패배조건
+      // 0 은 무승부
       if([2, -1].includes(diff)){
-        console.log('승리');  
+        me += 1;
+        message = '승리';  
       }else if ([-2, 1].includes(diff)){
-        console.log('패배');
+        computer += 1;
+        message = '패배';
       }else if (diff === 0){
-        console.log('무승부');
+        message = '무승부';
       }
-      
-      setTimeout( () => {
-        clickable = true;
-        clearInterval(intervalId); // 이전의 clearInterval과 실행시간이 다르다. (1초)
-                                  // intervalId가 남아있다면, 제거한다. 
-        intervalId = setInterval(changeComputerHand, 50);
-      }, 1000);
+
+      /*$score.textContent = `${message}!  현재 ${score} 점`;*/
+      $score.innerHTML = message + '! </br> 나 : ' + me + ' 승 </br> 컴퓨터 : ' + computer + ' 승 </br>';
+
+      if(me >= 3){
+        $score.innerHTML += '<font color = "red" size = 12 > <b> 나의 승리!! ' + me + ' : ' + computer + '</b></font>'; 
+      }
+      else if(computer >= 3){
+        $score.innerHTML += '<font color = "red" size = 12 > <b> 나의 승리!! ' + me + ' : ' + computer + '</b></font>'; 
+      }
+      else {
+        setTimeout( () => {
+          clickable = true;
+          clearInterval(intervalId); // 이전의 clearInterval과 실행시간이 다르다. (1초)
+                                    // intervalId가 남아있다면, 제거한다. 
+          intervalId = setInterval(changeComputerHand, 50);
+        }, 1000);
+      }
     }
   };
   $rock.addEventListener('click', clickButton);
