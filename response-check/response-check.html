@@ -30,6 +30,31 @@
 <script>
   const $screen = document.querySelector('#screen');
   const $result = document.querySelector('#result');
+
+  let startTime;
+  let endTime;
+  $screen.addEventListener('click', (event) => {
+    if(event.target.classList.contains('waiting')){ // 파랑색
+      $screen.classList.remove('waiting');
+      $screen.classList.add('ready');
+      setTimeout(function(){
+        startTime = new Date();
+        $screen.classList.remove('ready');
+        $screen.classList.remove('now');
+        $result.textContent = '클릭하세요';
+      }, Math.floor(Math.random() * 1000) + 2000); // 2초~3초 사이, 2000 ~ 3000 사이 수
+    }
+    else if (event.target.classList.contains('ready')){ // 빨강색
+
+    }else if (event.target.classList.contains('now')){ // 초록색
+      endTime = new Date();
+      $screen.textContent = `${endTime - startTime}ms`;
+      $screen.classList.remove('now');
+      $screen.classList.add('waiting');
+      $screen.textContent = '클릭해서 시작하세요';
+    }
+  });
+
 </script>
 </body>
 </html>
