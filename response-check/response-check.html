@@ -33,6 +33,7 @@
 
   let startTime;
   let endTime;
+  const records = [];
   $screen.addEventListener('click', (event) => {
     if(event.target.classList.contains('waiting')){ // 파랑색
       $screen.classList.remove('waiting');
@@ -40,7 +41,7 @@
       setTimeout(function(){
         startTime = new Date();
         $screen.classList.remove('ready');
-        $screen.classList.remove('now');
+        $screen.classList.add('now');
         $result.textContent = '클릭하세요';
       }, Math.floor(Math.random() * 1000) + 2000); // 2초~3초 사이, 2000 ~ 3000 사이 수
     }
@@ -48,7 +49,12 @@
 
     }else if (event.target.classList.contains('now')){ // 초록색
       endTime = new Date();
-      $screen.textContent = `${endTime - startTime}ms`;
+      const current = endTime - startTime;
+      records.push(current);
+      const average = records.reduce((a,c)=>(a+c) , 0) / records.length;
+      $result.textContent = `현재 : ${current} ms , 평균 : ${average} ms`;
+      startTime = null;
+      endTime = null;
       $screen.classList.remove('now');
       $screen.classList.add('waiting');
       $screen.textContent = '클릭해서 시작하세요';
