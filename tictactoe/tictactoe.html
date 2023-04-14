@@ -19,20 +19,31 @@
 </head>
 <body>
 <script>
-    let turn = 'O';
-    const data = [];
-    for (let i = 0; i<3; i++){
-      data.push([]);
-    }
+    const { body } = document;
     const $table = document.createElement('table');
+    const $result = document.createElement('div'); // 결과창
+    let turn = 'O';
+    const rows = [];
+    
+    /*
+    arr = [
+      [$td, $td, $td],
+      [$td, $td, $td],
+      [$td, $td, $td]
+    ]
+    arr[0][1].textContent;
+    */
+
     for(let i = 0 ; i< 3; i++){
       $tr = document.createElement('tr');
+      const cells = [];
       for( let j = 0 ; j < 3; j++){
         const $td = document.createElement('td');
+        cells.push($td);
         $td.addEventListener('click', (event) => {
           // 현재 칸에 글자가 있는지 확인
           if(event.target.textContent) return;
-          
+
           event.target.textContent = turn;
           // 승부 확인
           if(turn === 'O'){
@@ -43,9 +54,11 @@
         });
         $tr.append($td);
       }
+      rows.push(cells);
       $table.append($tr);
     }
-    document.body.append($table);
+    body.append($table);
+    body.append($result);
 
 </script>
   
