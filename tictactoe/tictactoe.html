@@ -34,29 +34,32 @@
     arr[0][1].textContent;
     */
 
+    const callback = (event) => {
+      // 현재 칸에 글자가 있는지 확인
+      if(event.target.textContent) {
+        console.log('빈 칸이 아닙니다');
+        return;
+      }
+      console.log('빈 칸 입니다.');
+      event.target.textContent = turn;
+      // 승부 확인
+
+      // 삼항연산자
+      turn = (turn === 'O') ? 'X' : 'O';
+    }; 
+
     for(let i = 0 ; i< 3; i++){
       $tr = document.createElement('tr');
       const cells = [];
       for( let j = 0 ; j < 3; j++){
         const $td = document.createElement('td');
         cells.push($td);
-        $td.addEventListener('click', (event) => {
-          // 현재 칸에 글자가 있는지 확인
-          if(event.target.textContent) return;
-
-          event.target.textContent = turn;
-          // 승부 확인
-          if(turn === 'O'){
-            turn = 'X';
-          }else if (turn === 'X'){
-            turn = 'O';
-          }
-        });
         $tr.append($td);
       }
       rows.push(cells);
       $table.append($tr);
     }
+    $table.addEventListener('click', callback);
     body.append($table);
     body.append($result);
 
