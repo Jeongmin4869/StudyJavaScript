@@ -22,7 +22,7 @@
     const { body } = document;
     const $table = document.createElement('table');
     const $result = document.createElement('div'); // 결과창
-    let turn = 'O';
+    let turn = 'X';
     const rows = [];
     
     /*
@@ -34,6 +34,69 @@
     arr[0][1].textContent;
     */
 
+    // 승부확인
+    const checkWinner = (target) => {
+      let rowIndex;
+      let cellIndex;
+      rows.forEach((row, ri) => {
+        row.forEach((cell, ci) => {
+          if(cell === target){
+            rowIndex = ri;
+            cellIndex = ci;
+          }
+        });
+      });
+
+      let hasWinner = false;
+      // 가로줄 검사
+      if (
+        rows[rowIndex][0].textContent === turn &&
+        rows[rowIndex][1].textContent === turn &&
+        rows[rowIndex][2].textContent === turn
+      ) {
+        hasWinner = true;
+      }
+      
+      // 세로줄 검사
+      if (
+        rows[0][cellIndex].textContent === turn &&
+        rows[1][cellIndex].textContent === turn &&
+        rows[2][cellIndex].textContent === turn 
+      ) {
+        hasWinner = true;
+      }
+      
+      // 대각선 검사
+      if (
+        rows[0][0].textContent === turn &&
+        rows[1][1].textContent === turn &&
+        rows[2][2].textContent === turn
+      ){
+        hasWinner = true;
+      }
+      if(
+        rows[0][2].textContent === turn &&
+        rows[1][1].textContent === turn &&
+        rows[2][0].textContent === turn
+      ) {
+        hasWinner = true;
+      }
+      return hasWinner;
+    };
+
+    // 무승부 확인
+    const checkGaneEnd = () => {
+      let draw = true;
+      rows.forEach((row) => {
+        row.forEach((cell) => {
+          if(!cell.textContent){
+            draw = false;
+          }
+        })
+      });
+      return draw;
+    }
+
     const callback = (event) => {
       // 현재 칸에 글자가 있는지 확인
       if(event.target.textContent) {
@@ -43,9 +106,18 @@
       console.log('빈 칸 입니다.');
       event.target.textContent = turn;
       // 승부 확인
-
+      if (checkWinner(event.target)){
+        $result.textContent = `${turn} 의 승리!`;
+        $table.removeEventListener('click', callback);
+        return;
+      }
+      // 무승부 확인
+      if(checkGaneEnd()){
+        $result.textContent = `무승부!`;
+        return;
+      }
       // 삼항연산자
-      turn = (turn === 'O') ? 'X' : 'O';
+      turn = (turn === 'X') ? 'O' : 'X';
     }; 
 
     for(let i = 0 ; i< 3; i++){
