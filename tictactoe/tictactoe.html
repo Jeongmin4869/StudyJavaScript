@@ -22,7 +22,7 @@
     const { body } = document;
     const $table = document.createElement('table');
     const $result = document.createElement('div'); // 결과창
-    let turn = 'X';
+    let turn = 'O';
     const rows = [];
     
     /*
@@ -75,6 +75,20 @@
       return hasWinner;
     };
 
+    const checkWinnerAndDraw = (target) => {
+      const hasWinner = checkWinner(target);
+      if(hasWinner){
+        $result.textContent = `${turn} 님의 승리!`;
+        return;
+      }
+      const draw = rows.flat().every((cell) => cell.textContent);
+      if(draw){
+        $result.textContent = `무승부`;
+        return;
+      }
+      turn = (turn === 'X') ? 'O' : 'X';
+    }
+
     const callback = (event) => {
       // 현재 칸에 글자가 있는지 확인
       if(event.target.textContent) {
@@ -83,21 +97,13 @@
       }
       console.log('빈 칸 입니다.');
       event.target.textContent = turn;
-      // 승부 확인
-      const hasWinner = checkWinner(event.target);
-      if (hasWinner){
-        $result.textContent = `${turn} 의 승리!`;
-        $table.removeEventListener('click', callback);
-        return;
+      checkWinnerAndDraw(event.target);
+      if(turn === 'X'){
+        const emptyCells = rows.flat().filter((v)=>!v.textContent);
+        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+        randomCell.textContent = 'X';
+        checkWinnerAndDraw(event.target);
       }
-      // 무승부 확인
-      const draw = rows.flat().every((cell) => cell.textContent);
-      if(draw){
-        $result.textContent = '무승부';
-        return;
-      }
-      // 삼항연산자
-      turn = (turn === 'X') ? 'O' : 'X';
     }; 
 
     for(let i = 0 ; i< 3; i++){
