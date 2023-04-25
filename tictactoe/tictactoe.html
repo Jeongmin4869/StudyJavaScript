@@ -23,6 +23,7 @@
     const $table = document.createElement('table');
     const $result = document.createElement('div'); // 결과창
     let turn = 'O';
+    let clickable = true;
     const rows = [];
     
     /*
@@ -79,6 +80,7 @@
       const hasWinner = checkWinner(target);
       if(hasWinner){
         $result.textContent = `${turn} 님의 승리!`;
+        $table.removeEventListener('click', callback);
         return;
       }
       const draw = rows.flat().every((cell) => cell.textContent);
@@ -86,10 +88,13 @@
         $result.textContent = `무승부`;
         return;
       }
-      turn = (turn === 'X') ? 'O' : 'X';
+      turn = turn === 'X' ? 'O' : 'X';
     }
 
     const callback = (event) => {
+      if(!clickable) {
+        return;
+      }
       // 현재 칸에 글자가 있는지 확인
       if(event.target.textContent) {
         console.log('빈 칸이 아닙니다');
@@ -99,10 +104,14 @@
       event.target.textContent = turn;
       checkWinnerAndDraw(event.target);
       if(turn === 'X'){
-        const emptyCells = rows.flat().filter((v)=>!v.textContent);
-        const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-        randomCell.textContent = 'X';
-        checkWinnerAndDraw(event.target);
+        clickable = false;
+        setTimeout(() => {
+          const emptyCells = rows.flat().filter((v)=>!v.textContent);
+          const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+          randomCell.textContent = 'X';
+          checkWinnerAndDraw(event.target);
+          clickable = true;
+        }, 1000);
       }
     }; 
 
