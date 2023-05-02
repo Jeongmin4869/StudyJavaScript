@@ -42,7 +42,7 @@
 <script>
   const $startScreen = document.querySelector('#start-screen');
   const $gameMenu = document.querySelector('#game-menu');
-  const $battleMenu = document.querySelector('battle-menu');
+  const $battleMenu = document.querySelector('#battle-menu');
   const $heroName = document.querySelector('#hero-name');
   const $heroLevel = document.querySelector('#hero-level');
   const $heroHp = document.querySelector('#hero-hp');
@@ -74,7 +74,7 @@
     event.preventDefault(); // submit과 동시에 창이 재실행되는것을 막음
     const name = event.target['name-input'].value; // const 로 설정할 경우 함수가 끝나면 사라진다. 잠깐 저장할때 사용한다.
     $startScreen.style.display = 'none';
-    $gameMehu.style.display = 'block';
+    $gameMenu.style.display = 'block';
     $heroName.textContent = name;
     $heroLevel.textContent = `${hero.lev} Lev`;
     $heroHp.textContent = `HP : ${hero.hp}/${hero.maxHp}`;
@@ -84,8 +84,9 @@
   });
 
   $gameMenu.addEventListener('submit', (event) => {
-    event.preventDeault();
+    event.preventDefault();
     const input = event.target['menu-input'].value;
+    //모험
     if(input === '1') {
       $gameMenu.style.display = 'none';
       $battleMenu.style.display = 'block';
@@ -96,10 +97,22 @@
       $monsterName.textContent = monster.name;
       $monsterHp.textContent = `HP : ${monster.hp}/${monster.maxHp}`;
       $monsterAtt.textContent = `ATT : ${monster.att}`;
+
+      const monster1 = JSON.parse(JSON.stringify(monsterList[0])); // 참조하지않은 복사. 그 중 깊은복사
+      const monster2 = monsterList[0]; // 객체를 대입. 참조
+      monster1.name = '새 몬스터';
+      console.log(monsterList[0].name); // 기존 저장된 값
+      monster2.name = '새 몬스터';
+      console.log(monsterList[0].name); // 새 몬스터
+      console.log(monsterList[0] === monster1); // false, 깊은복사
+      console.log(monsterList[0] === monster2); // true, 참조관계
+
     }
+    //휴식
     else if (input === '2'){
 
     }
+    //종료
     else if (input === '3'){
 
     }
@@ -114,7 +127,7 @@
 
     }
     else if (input === '3'){
-      
+
     }
   });
 </script>
