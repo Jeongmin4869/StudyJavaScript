@@ -60,6 +60,14 @@
     hp : 100,
     xp : 0,
     att : 10,
+    attack(monster) {
+      monster.hp -= this.att;
+      this.hp -= monster.att;
+    },
+    heal(monster){
+        this.hp += 20;
+        this.hp -= monster.att;
+    },
   };
 
   let monster = null;
@@ -91,7 +99,7 @@
       $gameMenu.style.display = 'none';
       $battleMenu.style.display = 'block';
       monster = JSON.parse(
-        JSON.stringify(monsterList[Math.floor(Math.random() * monsterList.length)])
+        JSON.stringify(monsterList[Math.floor(Math.random() * monsterList.length)]) // 객체의 정보만 필요할 뿐이므로 깊은복사 (stringify)
       );
       monster.maxHp = monster.hp;
       $monsterName.textContent = monster.name;
@@ -100,6 +108,8 @@
 
       const monster1 = JSON.parse(JSON.stringify(monsterList[0])); // 참조하지않은 복사. 그 중 깊은복사
       const monster2 = monsterList[0]; // 객체를 대입. 참조
+      const monster3 = { ...monster[o] }; // 객체 리터럴의 얕은복사
+      const arr1 = { ...arr };
       monster1.name = '새 몬스터';
       console.log(monsterList[0].name); // 기존 저장된 값
       monster2.name = '새 몬스터';
