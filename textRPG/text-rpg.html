@@ -106,6 +106,7 @@
       $monsterHp.textContent = `HP : ${monster.hp}/${monster.maxHp}`;
       $monsterAtt.textContent = `ATT : ${monster.att}`;
 
+      /*
       const monster1 = JSON.parse(JSON.stringify(monsterList[0])); // 참조하지않은 복사. 그 중 깊은복사
       const monster2 = monsterList[0]; // 객체를 대입. 참조
       const monster3 = { ...monster[o] }; // 객체 리터럴의 얕은복사
@@ -116,6 +117,7 @@
       console.log(monsterList[0].name); // 새 몬스터
       console.log(monsterList[0] === monster1); // false, 깊은복사
       console.log(monsterList[0] === monster2); // true, 참조관계
+      */
 
     }
     //휴식
@@ -130,12 +132,19 @@
 
   $battleMenu.addEventListener('submit', (event) => {
     const input = event.target['battle-input'].value;
-    if(input === '1'){
-
+    // 공격
+    if(input === '1'){ 
+      hero.attack(monster);
+      monster.attack(hero);
+      $heroHp.textContent = `HP : ${hero.hp}/${hero.maxHp}`;
+      $monsterHp.textContent = `HP : ${monster.hp}/${hero.maxHp}`;
+      $message.textContent = `${hero.att}의 데미지를 주고 ${monster.att}의 데미지를 받았다!`;
     }
+    // 회복
     else if (input === '2'){
 
     }
+    // 도망
     else if (input === '3'){
 
     }
