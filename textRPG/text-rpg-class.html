@@ -56,18 +56,20 @@
   class Game {
     constructor(name){
       this.monster = null;
-      this.hero = new Hero(this, name);
+      this.hero = null; 
       this.monsterList = [
         { name: '슬라임', hp:25, att:10, xp:10},
         { name: '스켈레톤', hp:50, att:15, xp:20},
         { name: '마왕', hp:150, att:35, xp:50},
       ];
-      this.start();
+      this.start(name);
     }
-    start() {
+    start(name) {
       $gameMenu.addEventListener('submit', this.onGameMenuInput);
       $battleMenu.addEventListener('submit', this.onBattleMenuInput);
       this.changeScreen('game');
+      this.hero = new Hero(this, name);
+      this.updateHeroStat();
     }
     changeScreen = (screen) => {
       if(screen === 'start'){
@@ -117,6 +119,34 @@
       else if (input === '3'){
         this.changeScreen('game');
       }
+    }
+
+    updateHeroStat() {
+      console.log(this);  // Class{moster, hero, ...}
+      console.log(this.hero);
+      const { hero } = this;
+      console.log(this.hero === hero); // true
+      /*
+      this.hero == hero
+      */
+      /*
+      const {a, b} = {b:10, a:20}; >> undefined
+      a >>20
+      */
+      console.log(hero);
+      if (hero === null){
+        $heroName.textContent = '';
+        $heroLevel.textContent = '';
+        $heroHp.textContent = '';
+        $heroXp.textContent = '';
+        $heroAtt.textContent = '';
+        return;
+      }
+      $heroName.textContent = hero.name;
+      $heroLevel.textContent = `${hero.lev}Lev`;
+      $heroHp.textContent = `${hero.hp}/${hero.maxHp}`;
+      $heroXp.textContent = `${hero.xp}/${15 * hero.lev}`;
+      $heroAtt.textContent = `ATT : ${hero.att}`;
     }
   }
 
