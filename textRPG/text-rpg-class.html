@@ -123,8 +123,8 @@
         const {hero, monster} = this;
         hero.attack(monster);
         monster.attack(hero);
-
-        if(hero.xp <= 0){
+        console.log(hero.xp);
+        if(hero.hp <= 0){
           this.showMessage(`${hero.lev} 레벨에서 모험을 종료합니다. 새로운 주인공을 생성해 모험을 떠나세요`);
           this.quit();
         }
@@ -152,10 +152,10 @@
     }
 
     updateHeroStat() {
-      console.log(this);  // Class{moster, hero, ...}
-      console.log(this.hero);
+      //console.log(this);  // Class{moster, hero, ...}
+      //console.log(this.hero);
       const { hero } = this;
-      console.log(this.hero === hero); // true
+      //console.log(this.hero === hero); // true
       /*
       this.hero == hero
       */
