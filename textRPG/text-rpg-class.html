@@ -209,18 +209,28 @@
     }
   }
 
-  class Hero {
-    constructor(game, name){
-      this.game = game;
+  class Unit {
+    constructor(game, name, hp, att, xp){
+      this.game = gane;
       this.name = name;
+      this.hp = hp;
+      this.att = att;
+      this.xp = xp;
+    }
+    attck(target){
+      target.hp -= this.att;
+    }
+  }
+
+  class Hero extends Unit{
+    constructor(game, name){
+      super(game, name, 100, 10, 0);
       this.lev = 1;
       this.maxHp = 100;
-      this.hp = 100;
-      this.xp = 0;
-      this.att = 10;
     }
     attack(target){
-      target.hp -= this.att;
+      super.attack(target);
+      console.log('영웅이 공격');
     }
     heal(monster){
       this.hp += 20;
@@ -239,17 +249,14 @@
     }
   }
 
-  class Monster {
+  class Monster extends Unit{
     constructor(game, name, hp, att, xp){
-      this.game = game;
-      this.name = name;
+      super(game, name, hp, att, xp);
       this.maxHp = hp;
-      this.hp = hp;
-      this.att = att;
-      this.xp = xp;
     }
     attack(target){
-      target.hp -= this.att;
+      super.attack(target);
+      console.log('몬스터가 공격');
     }
   }
 

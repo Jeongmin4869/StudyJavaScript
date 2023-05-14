@@ -1,14 +1,30 @@
 class Human {
-    constructor(name, age){
-        this.name = name;
-        this.age = age;
-    }
+  constructor(name, age){
+    this.name = name;
+    this.age = age;
+  }
 
-    sayName(){
-        console.log(name);
-    }
+  sayName(){
+    console.log(name);
+  }
 
-    sayAge(){
-        console.log(age);
-    }
+  sayAge(){
+    console.log(age);
+  }
 }
+
+class Programmer extends Human {
+  constructor{name, age, languages}{
+    super(name, age);
+    this.languages = languages;
+  }
+  writeCode(){
+    console.log(this.languages.join() + `(으)로 코딩합니다.`);
+  }
+}
+
+const programmer = new Programmer{
+  'StrongM',
+  '27',
+  ['HTTP', 'CSS', 'JS'],
+};
