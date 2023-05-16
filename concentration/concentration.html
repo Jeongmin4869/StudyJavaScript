@@ -53,6 +53,13 @@ const colors = ['red', 'orange', 'yellow', 'green', 'white', 'pink'];
 let colorCopy = colors.concat(colors); // colors + colors
 let shuffled = [];
 
+function shuffled(){
+  for(let i=0; colorCopy.length > 0; i++){
+    const randomIndex = Math.floor(Math.random * colorCopy.length);
+    shuffled = shuffled.concat(colorCopy.splice(randomIndex, 1));
+  }
+}
+
 </script>
 </body>
 </html>
