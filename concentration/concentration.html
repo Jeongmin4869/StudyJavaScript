@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concentraion</title>
+  <style>
+    .card{
+      display: inline-block;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      width: 70px;
+      height: 100px;
+      perspective: 140px;
+    }
+
+    .card-inner{
+      position: relative;
+      width: 100px;
+      height: 100px;
+      text-align: center;
+      transition: transform 0.8s;
+    }
+
+    .card.flipped .card-inner{
+      transform: rotate(180deg);
+    }
+
+    .card-front{
+      background: navy;
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border: 1px solid black;
+      backface-visibility: hidden;
+    }
+
+    .card-back {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body>
+<script>
+
+const $wrapper = document.querySelector('#wrapper');
+
+const total = 12;
+const colors = ['red', 'orange', 'yellow', 'green', 'white', 'pink'];
+let colorCopy = colors.concat(colors); // colors + colors
+let shuffled = [];
+
+</script>
+</body>
+</html>
