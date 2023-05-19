@@ -55,6 +55,7 @@ let colorCopy = colors.concat(colors); // colors + colors
 let shuffled = [];
 let clicked = [];
 let completed = [];
+let clickable = false;
 
 function shuffle(){
   for(let i=0; colorCopy.length > 0; i++){
@@ -80,6 +81,9 @@ function createCard(i){ // div.card > div.card-inner > (div.card-front + div.car
 }
 
 function onClickCard(){
+  if(!clickable || completed.includes(this) || clicked[0] === this){
+    return;
+  }
   this.classList.toggle('flipped');
   clicked.push(this);
   if(clicked.length !== 2){
@@ -91,14 +95,26 @@ function onClickCard(){
   if(firstBackColor === secondBackColor){
     completed = completed.concat(clicked);
     clicked = [];
+    if(completed.length !== total){
+      return;
+    }
+    setTimeout(() => {
+      alert('Game Clear !!! ');
+      resetGame();
+    }, 1000);
     return;
   }
-  clicked[0].classList.remove('flipped');
-  clicked[1].classList.remove('flipped');
-  clicked = [];
+
+  setTimeout(() => {
+      clicked[0].classList.remove('flipped');
+      clicked[1].classList.remove('flipped');
+      clicked = [];
+  }, 500)
+
 }
 
 function startGame() {
+  clickable = false;
   shuffle();
   for(let i = 0; i< total ; i++) {
     const card = createCard(i);
@@ -117,10 +133,20 @@ function startGame() {
     document.querySelectorAll('.card').forEach((card) => {
       card.classList.remove('flipped');
     });
+    clickable = true;
   }, 5000);
+  
+}
+startGame();
+
+function resetGame(){
+  $wrapper.innerHTML = '';
+  colorCopy = colors.concat(colors);
+  shuffle = [];
+  completed = [];
+  startGame();
 }
 
-startGame();
 
 </script>
 </body>
