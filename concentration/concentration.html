@@ -89,6 +89,7 @@ function onClickCard(){
   if(clicked.length !== 2){
     return;
   }
+  clickable = false;
   const firstBackColor = clicked[0].querySelector('.card-back').style.backgroundColor;
   const secondBackColor = clicked[1].querySelector('.card-back').style.backgroundColor;
   // 두 카드의 뒷면이 같은 경우
@@ -109,6 +110,7 @@ function onClickCard(){
       clicked[0].classList.remove('flipped');
       clicked[1].classList.remove('flipped');
       clicked = [];
+      clickable = true;
   }, 500)
 
 }
@@ -124,7 +126,6 @@ function startGame() {
 
   document.querySelectorAll('.card').forEach((card, index) => {
     setTimeout(() => {
-      console.log('dd');
       card.classList.add('flipped');
     }, 1000 + 100 * index);
   });
