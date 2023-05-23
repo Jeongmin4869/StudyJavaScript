@@ -49,13 +49,19 @@
 <script>
 const $wrapper = document.querySelector('#wrapper');
 
-const total = 12;
-const colors = ['red', 'orange', 'yellow', 'green', 'white', 'pink'];
-let colorCopy = colors.concat(colors); // colors + colors
+const total = parseInt(prompt('카드 개수를 짝수로 입력하세요 (최대 20)'));
+const colors = [
+                  'red', 'orange', 'yellow', 'green', 'white',
+                  'pink', 'cyan', 'violet', 'gray', 'black'
+];
+let colorSlice = colors.slice(0, total / 2);
+let colorCopy = colorSlice.concat(colorSlice); // colorSlice + colorSlice
 let shuffled = [];
 let clicked = [];
 let completed = [];
 let clickable = false;
+let startTime ;
+
 
 function shuffle(){
   for(let i=0; colorCopy.length > 0; i++){
@@ -94,13 +100,15 @@ function onClickCard(){
   const secondBackColor = clicked[1].querySelector('.card-back').style.backgroundColor;
   // 두 카드의 뒷면이 같은 경우
   if(firstBackColor === secondBackColor){
+    clickable = true;
     completed = completed.concat(clicked);
     clicked = [];
     if(completed.length !== total){
       return;
     }
+    const endTime = new Date();
     setTimeout(() => {
-      alert('Game Clear !!! ');
+      alert(`Game Clear !!! ${(endTime - startTime) / 1000}초 걸렸습니다. `);
       resetGame();
     }, 1000);
     return;
@@ -135,6 +143,7 @@ function startGame() {
       card.classList.remove('flipped');
     });
     clickable = true;
+    startTime = new Date();
   }, 5000);
   
 }
@@ -142,8 +151,9 @@ startGame();
 
 function resetGame(){
   $wrapper.innerHTML = '';
-  colorCopy = colors.concat(colors);
-  shuffle = [];
+  colorSlice = colors.slice(0, total / 2);
+  colorCopy = colorSlice.concat(colorSlice); // colorSlice + colorSlice 
+  shuffled = [];
   completed = [];
   startGame();
 }
