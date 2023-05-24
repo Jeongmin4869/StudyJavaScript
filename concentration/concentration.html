@@ -65,7 +65,7 @@ let startTime ;
 
 function shuffle(){
   for(let i=0; colorCopy.length > 0; i++){
-    const randomIndex = Math.floor(Math.random * colorCopy.length);
+    const randomIndex = Math.floor(Math.random() * colorCopy.length);
     shuffled = shuffled.concat(colorCopy.splice(randomIndex, 1));
   }
 }  
