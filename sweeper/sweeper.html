@@ -36,7 +36,7 @@
     FLAG: -3,
     QUESTION_MINE: -4,
     FLAG_MINE: -5,
-    mine: -6,
+    MINE: -6,
     OPENED: 0, // 0 이상이면 다 모두 열린칸
   }
   let data;
@@ -67,6 +67,47 @@
     return data;
   }
 
+  function onRightClick(event){
+    event.preventDefault();
+    const target = event.target; // td. 우클릭이 발생한 곳
+    const rowIndex = target.parentNode.rowIndex; // tr
+    const cellIndex = target.cellIndex; // td
+    const cellDate = data[rowIndex][cellIndex];
+    // 지뢰일경우
+    if(cellDate === CODE.MINE){
+      data[rowIndex][cellIndex] = CODE.QUESTION_MINE;
+      target.className = 'question';
+      target.textContent = '?';
+    }
+    else if (cellDate === CODE.QUESTION_MINE){
+      data[rowIndex][cellIndex] = CODE.QUESTION;
+      target.className = 'flag';
+      target.textContent = '!';
+    }
+    else if (cellDate === CODE.QUESTION){
+      data[rowIndex][cellIndex] = CODE.MINE;
+      target.className = '';
+      target.textContent = 'X';
+    }
+    // 지뢰 아닐 경우
+    else if (cellDate === CODE.NORMAL){
+      data[rowIndex][cellIndex] = CODE.QUESTION;
+      target.className = 'question';
+      target.textContent = '?';
+    }
+    else if (cellDate === CODE.QUESTION){
+      data[rowIndex][cellIndex] = CODE.FLAG;
+      target.className = 'flag';
+      target.className = '!';
+    }
+    else if (cellDate === CODE.FLAG){
+      data[rowIndex][cellIndex] = CODE.NORMAL;
+      target.className = '';
+      target.textContent = '';
+    }
+
+  }
+
   function drawTable(){
     data = plantMine();
     data.forEach((row) => {
@@ -79,7 +120,8 @@
         $tr.append($td);
       });
       $tbody.append($tr);
-    })
+      $tbody.addEventListener('contextMenu', onRightClick);
+    });
   }
 
   drawTable();
