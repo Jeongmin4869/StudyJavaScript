@@ -69,6 +69,7 @@
 
   function onRightClick(event){
     event.preventDefault();
+    
     const target = event.target; // td. 우클릭이 발생한 곳
     const rowIndex = target.parentNode.rowIndex; // tr
     const cellIndex = target.cellIndex; // td
@@ -80,11 +81,11 @@
       target.textContent = '?';
     }
     else if (cellDate === CODE.QUESTION_MINE){
-      data[rowIndex][cellIndex] = CODE.QUESTION;
+      data[rowIndex][cellIndex] = CODE.FLAG_MINE;
       target.className = 'flag';
       target.textContent = '!';
     }
-    else if (cellDate === CODE.QUESTION){
+    else if (cellDate === CODE.FLAG_MINE){
       data[rowIndex][cellIndex] = CODE.MINE;
       target.className = '';
       target.textContent = 'X';
@@ -98,13 +99,17 @@
     else if (cellDate === CODE.QUESTION){
       data[rowIndex][cellIndex] = CODE.FLAG;
       target.className = 'flag';
-      target.className = '!';
+      target.textContent = '!';
     }
     else if (cellDate === CODE.FLAG){
       data[rowIndex][cellIndex] = CODE.NORMAL;
       target.className = '';
       target.textContent = '';
     }
+
+  }
+
+  function onLeftClick(event){
 
   }
 
@@ -120,7 +125,8 @@
         $tr.append($td);
       });
       $tbody.append($tr);
-      $tbody.addEventListener('contextMenu', onRightClick);
+      $tbody.addEventListener('contextmenu', onRightClick);
+      $tbody.addEventListener('click', onLeftClick);
     });
   }
 
