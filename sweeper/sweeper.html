@@ -67,6 +67,21 @@
     return data;
   }
 
+  function countMine(){
+    const mines = [CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE];
+    let i = 0;
+    mines.includes(data[rowIndex-1]?.[cellIndex-1]) && i++;
+    mines.includes(data[rowIndex-1]?.[cellIndex]) && i++;
+    mines.includes(data[rowIndex-1][cellIndex+1]) && i++;
+    mines.includes(data[rowIndex][cellIndex-1]) && i++; // 존재 또는 undefined이므로 ?. 사용 안함
+    mines.includes(data[rowIndex][cellIndex+1]) && i++;
+    mines.includes(data[rowIndex+1]?.[cellIndex-1]) && i++;
+    mines.includes(data[rowIndex+1]?.[cellIndex]) && i++;
+    mines.includes(data[rowIndex+1]?.[cellIndex+1]) && i++;
+    return 1;
+
+  }
+
   function onRightClick(event){
     event.preventDefault();
     
@@ -110,7 +125,19 @@
   }
 
   function onLeftClick(event){
+    const target = event.target; // td. 이벤트버블링
+    const rowIndex = target.parentNode.rowIndex;
+    const cellIndex = target.cellIndex;
+    const cellData = data[rowIndex][cellIndex];
+    if(cellData === CODE.NORMAL){ // 닫힌 칸
+      const count = countMine(rowIndex, cellIndex);
+      target.textContent = count || '';
+      target.className = 'opened';
+      data[rowIndex][cellIndex] = count;
+    }
+    else if (cellData === CODE.MINE){
 
+    }
   }
 
   function drawTable(){
