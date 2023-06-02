@@ -14,7 +14,7 @@
       height: 20px;
       background: #888;
     }
-    td.opend {background: white;}
+    td.opened {background: white;}
     td.flag {background: red;}
     td.question {background: orange;}
   </style>
@@ -67,7 +67,7 @@
     return data;
   }
 
-  function countMine(){
+  function countMine(rowIndex, cellIndex){
     const mines = [CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE];
     let i = 0;
     mines.includes(data[rowIndex-1]?.[cellIndex-1]) && i++;
@@ -78,7 +78,11 @@
     mines.includes(data[rowIndex+1]?.[cellIndex-1]) && i++;
     mines.includes(data[rowIndex+1]?.[cellIndex]) && i++;
     mines.includes(data[rowIndex+1]?.[cellIndex+1]) && i++;
-    return 1;
+    return i;
+
+  }
+
+  function openArround(rowIndex, cellIndex){
 
   }
 
@@ -130,13 +134,13 @@
     const cellIndex = target.cellIndex;
     const cellData = data[rowIndex][cellIndex];
     if(cellData === CODE.NORMAL){ // 닫힌 칸
-      const count = countMine(rowIndex, cellIndex);
-      target.textContent = count || '';
-      target.className = 'opened';
-      data[rowIndex][cellIndex] = count;
+      openArround(rowIndex, cellIndex);
     }
     else if (cellData === CODE.MINE){
-
+      target.textContent = '펑';
+      target.className = 'opened';
+      $tbody.removeEventListener('contextmenu', onRightClick); // 이벤트 버블링. 한번만 제거하면 모두 제거
+      $tbody.removeEventListener('click', onLeftClick);
     }
   }
 
