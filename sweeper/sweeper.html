@@ -72,7 +72,7 @@
     let i = 0;
     mines.includes(data[rowIndex-1]?.[cellIndex-1]) && i++;
     mines.includes(data[rowIndex-1]?.[cellIndex]) && i++;
-    mines.includes(data[rowIndex-1][cellIndex+1]) && i++;
+    mines.includes(data[rowIndex-1]?.[cellIndex+1]) && i++;
     mines.includes(data[rowIndex][cellIndex-1]) && i++; // 존재 또는 undefined이므로 ?. 사용 안함
     mines.includes(data[rowIndex][cellIndex+1]) && i++;
     mines.includes(data[rowIndex+1]?.[cellIndex-1]) && i++;
@@ -82,8 +82,32 @@
 
   }
 
-  function openArround(rowIndex, cellIndex){
+  function open(rowIndex, cellIndex){
+    const target = $tbody.children[rowIndex]?.children[cellIndex];
+    if(!target){
+      return;
+    }
+    const count = countMine(rowIndex, cellIndex);
+    target.textContent = count || '';
+    target.className = 'opened';
+    data[rowIndex][cellIndex] = count;
+    return count;
+  }
 
+  function openArround(rI, cI){
+    setTimeout(() => {
+      const count = open(rI, cI);
+      if(count === 0){
+        openArround(rI - 1, cI - 1);
+        openArround(rI - 1, cI);
+        openArround(rI - 1, cI + 1);
+        openArround(rI, cI + 1);
+        openArround(rI, cI - 1);
+        openArround(rI + 1, cI - 1);
+        openArround(rI + 1, cI);
+        openArround(rI + 1, cI + 1);
+      }
+    }, 0);
   }
 
   function onRightClick(event){
