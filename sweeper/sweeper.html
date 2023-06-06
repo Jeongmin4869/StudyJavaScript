@@ -20,11 +20,13 @@
   </style>
 </head>
 <body>
+<div id="timer">0초</div>
 <table id="table">
   <tbody></tbody>
 </table>
 <div id="result"></div>    
 <script>
+  const $timer = document.querySelector('#timer');
   const $tbody = document.querySelector('#table tbody');
   const $result = document.querySelector('#result');
   const row = 10;
@@ -38,8 +40,14 @@
     FLAG_MINE: -5,
     MINE: -6,
     OPENED: 0, // 0 이상이면 다 모두 열린칸
-  }
+  };
   let data;
+  let openCount = 0;
+  let startTime = new Date();
+  let interval = setInterval( () => {
+    const time = Math.floor((new Date() - startTime) / 1000); // Math.floor로 정수
+    $timer.textContent = `${time}초`;
+  }, 1000);
 
   function plantMine(){
     const candidate = Array(row * cell).fill().map((arr, i)=> {
@@ -83,6 +91,7 @@
   }
 
   function open(rowIndex, cellIndex){
+    if(data[rowIndex]?.[cellIndex] >= CODE.OPENED) return;
     const target = $tbody.children[rowIndex]?.children[cellIndex];
     if(!target){
       return;
@@ -91,6 +100,17 @@
     target.textContent = count || '';
     target.className = 'opened';
     data[rowIndex][cellIndex] = count;
+    openCount ++;
+    console.log(openCount);
+    if(openCount === row * cell - mine){
+      const time = (new Date() - startTime) / 1000;
+      clearInterval(interval); // interval, Timer는 반드시 clear
+      $tbody.removeEventListener('contextMenu', onRightClick);
+      $tbody.removeEventListener('click', onLeftClick);
+      setTimeout( () => { // 모든 창이 열린 후 보여주기 위해. 화면 그리기는 비동기이다. 
+        alert(`승리했습니다. 기록은 ${time}초 입니다. `)
+      }, 500);
+    }
     return count;
   }
 
@@ -161,6 +181,8 @@
       openArround(rowIndex, cellIndex);
     }
     else if (cellData === CODE.MINE){
+      const time = (new Date() - startTime) / 1000;
+      clearInterval(interval);
       target.textContent = '펑';
       target.className = 'opened';
       $tbody.removeEventListener('contextmenu', onRightClick); // 이벤트 버블링. 한번만 제거하면 모두 제거
