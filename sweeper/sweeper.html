@@ -20,18 +20,27 @@
   </style>
 </head>
 <body>
+
+<form id = "form">
+  <input placeholder="가로 줄" id = "row" size = "5"/>
+  <input placeholder="세로 줄" id = "cell" size = "5"/>
+  <input placeholder="지뢰" id = "mine" size = "5"/>
+  <button>생성</button>
+</form>
+
 <div id="timer">0초</div>
 <table id="table">
   <tbody></tbody>
 </table>
 <div id="result"></div>    
 <script>
+  const $form = document.querySelector('#form');
   const $timer = document.querySelector('#timer');
   const $tbody = document.querySelector('#table tbody');
   const $result = document.querySelector('#result');
-  const row = 10;
-  const cell = 10;
-  const mine = 10;
+  let row = 10;
+  let cell = 10;
+  let mine = 10;
   const CODE = {
     NORMAL: -1, // 닫힌칸. 지뢰없음 
     QUESTION: -2,
@@ -42,12 +51,25 @@
     OPENED: 0, // 0 이상이면 다 모두 열린칸
   };
   let data;
-  let openCount = 0;
-  let startTime = new Date();
-  let interval = setInterval( () => {
-    const time = Math.floor((new Date() - startTime) / 1000); // Math.floor로 정수
-    $timer.textContent = `${time}초`;
-  }, 1000);
+  let openCount;
+  let startTime ;
+  let interval ;
+
+  function onSubmit(event){
+    event.preventDefault(); // form의 기본동작은 페이지 새로고침이기 때문에, preventDefault로 새로고침을 막아준다.
+    row = parseInt(event.target.row.value);
+    cell = parseInt(event.target.cell.value);
+    mine = parseInt(event.target.mine.value);
+    openCount = 0;
+    $tbody.innerHTML = '';
+    drawTable();
+    startTime = new Date();
+    interval = setInterval( () => {
+      const time = Math.floor((new Date() - startTime) / 1000); // Math.floor로 정수
+      $timer.textContent = `${time}초`;
+    }, 1000);
+  }
+  $form.addEventListener('submit', onSubmit);
 
   function plantMine(){
     const candidate = Array(row * cell).fill().map((arr, i)=> {
@@ -206,8 +228,6 @@
       $tbody.addEventListener('click', onLeftClick);
     });
   }
-
-  drawTable();
 
 </script>
 </body>
