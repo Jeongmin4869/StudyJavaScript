@@ -54,6 +54,7 @@
   let openCount;
   let startTime ;
   let interval ;
+  const dev = false; // 개발모드 운영모드
 
   function onSubmit(event){
     event.preventDefault(); // form의 기본동작은 페이지 새로고침이기 때문에, preventDefault로 새로고침을 막아준다.
@@ -62,6 +63,7 @@
     mine = parseInt(event.target.mine.value);
     openCount = 0;
     $tbody.innerHTML = '';
+    clearInterval(interval);
     drawTable();
     startTime = new Date();
     interval = setInterval( () => {
@@ -152,6 +154,29 @@
     }, 0);
   }
 
+  let normalCellFound = false;
+  let searched;
+  function transferMine(rI, cI){
+    if (normalCellFound) return; // 빈칸을 찾은 경우 종료
+    if (rI < 0 || rI >= row || cI < 0 || cI > cell) return;
+    if (searched[rI][cI]) return; // 이미 찾은 칸이면 종료
+    if (isNormal(data[rI]?.[cI]) === CODE.NORMAL) {// 빈칸인 경우
+      normalCellFound = true;
+      data[rI][cI] = CODE.MINE;
+    }
+    else { // 지롸 칸인 경우 주위 8칸 탐색
+      searched[rI][cI] = true;
+      transferMine(rI - 1, cI - 1);
+      transferMine(rI - 1, cI);
+      transferMine(rI - 1, cI + 1);
+      transferMine(rI, cI - 1);
+      transferMine(rI, cI + 1);
+      transferMine(rI + 1, cI - 1);
+      transferMine(rI + 1, cI);
+      transferMine(rI + 1, cI + 1);
+    }
+  }
+
   function onRightClick(event){
     event.preventDefault();
     
@@ -173,7 +198,7 @@
     else if (cellDate === CODE.FLAG_MINE){
       data[rowIndex][cellIndex] = CODE.MINE;
       target.className = '';
-      target.textContent = 'X';
+      dev && (target.textContent = 'X');
     }
     // 지뢰 아닐 경우
     else if (cellDate === CODE.NORMAL){
@@ -199,6 +224,15 @@
     const rowIndex = target.parentNode.rowIndex;
     const cellIndex = target.cellIndex;
     const cellData = data[rowIndex][cellIndex];
+    if(openCount === 0){
+      openCount ++;
+      searched = Array(row).fill().map(() => []); // row크기의 빈 배열 생성
+      if(cellData === CODE.MINE){
+        transferMine(rowIndex, cellIndex); // 지뢰 옮기기
+        data[rowIndex][cellIndex] = CODE.NORMAL; // 현재 칸을 빈칸으로
+        cellData = CODE.NORMAL;
+      }
+    }
     if(cellData === CODE.NORMAL){ // 닫힌 칸
       openArround(rowIndex, cellIndex);
     }
@@ -219,7 +253,7 @@
       row.forEach((cell) => {
         const $td = document.createElement(`td`);
         if(cell === CODE.MINE){
-          $td.textContent = 'X'; // 개발 편의를 위해 
+          dev && ($td.textContent = 'X'); // 개발 편의를 위해 
         }
         $tr.append($td);
       });
