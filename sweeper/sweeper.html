@@ -160,7 +160,7 @@
     if (normalCellFound) return; // 빈칸을 찾은 경우 종료
     if (rI < 0 || rI >= row || cI < 0 || cI > cell) return;
     if (searched[rI][cI]) return; // 이미 찾은 칸이면 종료
-    if (isNormal(data[rI]?.[cI]) === CODE.NORMAL) {// 빈칸인 경우
+    if (data[rI][cI] === CODE.NORMAL) {// 빈칸인 경우
       normalCellFound = true;
       data[rI][cI] = CODE.MINE;
     }
@@ -219,14 +219,24 @@
 
   }
 
+  function showMines(){
+    const mines = [CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE];
+    data.forEach((row, rowIndex) => {
+      row.forEach((cell, cellIndex) => {
+        if(mines.includes(cell)){
+          $tbody.children[rowIndex].children[cellIndex].textContent = 'X';
+        }
+      });
+    });
+  }
+
   function onLeftClick(event){
     const target = event.target; // td. 이벤트버블링
     const rowIndex = target.parentNode.rowIndex;
     const cellIndex = target.cellIndex;
-    const cellData = data[rowIndex][cellIndex];
+    let cellData = data[rowIndex][cellIndex];
     if(openCount === 0){
-      openCount ++;
-      searched = Array(row).fill().map(() => []); // row크기의 빈 배열 생성
+      searched = Array(row).fill().map(() => []); // row크기의 2차원 배열 생성
       if(cellData === CODE.MINE){
         transferMine(rowIndex, cellIndex); // 지뢰 옮기기
         data[rowIndex][cellIndex] = CODE.NORMAL; // 현재 칸을 빈칸으로
@@ -238,6 +248,7 @@
     }
     else if (cellData === CODE.MINE){
       const time = (new Date() - startTime) / 1000;
+      showMines();
       clearInterval(interval);
       target.textContent = '펑';
       target.className = 'opened';
