@@ -65,11 +65,35 @@
   }
 
   function draw(){
-
+    data.forEach((rowData, i) => {
+      rowData.forEach((cellData, j) => {
+        const $target = $table.children[i].children[j]; // table - tr - td
+        if(cellData > 0){
+          $target.textContent = cellData;
+          $target.className = 'color-' + cellData;
+        } else {
+          $target.textContent = '';
+          $target.className = '';
+        }
+      });
+    });
   }
 
   startGame();
 
+  function moveCells(direction){}
+  window.addEventListener('keyup', (event) => {
+    if(event.key === 'ArrowUp'){
+      moveCells('up');
+    }else if(event.key === 'ArrowDown'){
+      moveCells('down');
+    }else if(event.key === 'ArrowLeft'){
+      moveCells('left');
+    }else if(event.key === 'ArrowRight'){
+      moveCells('right');
+    }
+  });
+  
 </script>
 </body>
 </html>
