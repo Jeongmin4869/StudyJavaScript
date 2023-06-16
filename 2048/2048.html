@@ -81,19 +81,50 @@
 
   startGame();
 
-  function moveCells(direction){}
-  window.addEventListener('keyup', (event) => {
-    if(event.key === 'ArrowUp'){
-      moveCells('up');
-    }else if(event.key === 'ArrowDown'){
-      moveCells('down');
-    }else if(event.key === 'ArrowLeft'){
+  data = [ // 테스트용 데이터
+    [0, 2, 4, 2],
+    [0, 0, 8, 0],
+    [2, 2, 2, 2],
+    [0, 16, 0, 4]
+  ];
+
+  function moveCells(direction){
+    switch (direction){
+      case 'left':
+        break;
+      case 'right':
+        break;
+      case 'up':
+        break;
+      case 'down':
+        break;
+    }
+    draw();
+  };
+  
+  let startCoord;
+  window.addEventListener('mousedown', (event) => {
+    startCoord = [event.clientX, event.clientY];
+  });
+  window.addEventListener('mouseup', (event) => {
+    const endCoord = [event.clientX, event.clientY];
+    const diffX = endCoord[0] - startCoord[0];
+    const diffY = endCoord[1] - startCoord[1];
+    if(diffX < 0 && Math.abs(diffX) > Math.abs(diffY)){ // Math.abs() 절대값 반환
       moveCells('left');
-    }else if(event.key === 'ArrowRight'){
+    }
+    else if(diffX > 0 && Math.abs(diffX) > Math.abs(diffY)){
       moveCells('right');
     }
+    else if(diffY > 0 && Math.abs(diffX) <= Math.abs(diffY)){
+      moveCells('down')
+    }
+    else if(diffY < 0 && Math.abs(diffX) <= Math.abs(diffY)){
+      moveCells('up');
+    }
   });
-  
+
+
 </script>
 </body>
 </html>
