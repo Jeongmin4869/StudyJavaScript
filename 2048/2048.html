@@ -26,11 +26,24 @@
 </head>
 <body>
 <table id = "table"></table>
-<div id="score">0</div>
+<div>
+  <span id="score">0</span>
+  <button id="back">Back</button>
+</div>
 <script>
   const $table = document.getElementById('table'); // querySelector는 id에 #이 붙는다. 
   const $score = document.getElementById('score'); // getElementById는 id만 사용하기 때문에 #이 붙지 않는다. 
+  const $back = document.getElementById('back');
   let data = [];
+  const history = [];
+
+  $back.addEventListener('click', () => {
+    const prevData = history.pop();
+    if(!prevData) return;
+    $score.textContent = prevData.score;
+    data = prevData.table;
+    draw();
+  });
 
   // $table -> $fragment -> $tr -> $td
   function startGame(){
@@ -81,14 +94,22 @@
 
   startGame();
 
+  /*
   data = [ // 테스트용 데이터
-    [0, 2, 4, 2],
-    [0, 0, 8, 0],
-    [2, 2, 4, 8],
-    [0, 16, 0, 4]
+    [32, 2, 4, 2],
+    [64, 4, 8, 4],
+    [2, 1024, 1024, 32],
+    [32, 16, 64, 4]
   ];
   draw();
+  */
+
   function moveCells(direction){
+    history.push({
+      table: JSON.parse(JSON.stringify(data)), // 참조관계를 끊는다. 참조하지 않은 복사. 깊은복사.
+      score: $score.textContent,
+    });
+
     switch (direction){
       case 'left': { // case문에서 변수를 선언할 경우 중괄호 사용을 권장. 변수가 겹칠 수 있음
           const newData = [[],[],[],[]];
@@ -98,6 +119,8 @@
                 const currentRow = newData[i];
                 const prevData = currentRow[currentRow.length - 1];
                 if(prevData === cellData){
+                  const score = parseInt($score.textContent);
+                  $score.textContent = score + currentRow[currentRow.length - 1] * 2;
                   currentRow[currentRow.length - 1] *= -2;
                 }
                 else {
@@ -122,6 +145,8 @@
                 const currentRow = newData[i];
                 const prevData = currentRow[currentRow.length - 1];
                 if(prevData === rowData[3-j]){
+                  const score = parseInt($score.textContent);
+                  $score.textContent = score + currentRow[currentRow.length - 1] * 2;
                   currentRow[currentRow.length - 1] *= -2;
                 }
                 else {
@@ -146,6 +171,8 @@
                 const currentRow = newData[j];
                 const prevData = currentRow[currentRow.length - 1];
                 if(prevData === cellData){
+                  const score = parseInt($score.textContent);
+                  $score.textContent = score + currentRow[currentRow.length - 1] * 2;
                   currentRow[currentRow.length - 1] *= -2;
                 }
                 else {
@@ -170,6 +197,8 @@
                 const currentRow = newData[j];
                 const prevData = currentRow[currentRow.length - 1];
                 if(prevData === data[3-i][j]){
+                  const score = parseInt($score.textContent);
+                  $score.textContent = score + currentRow[currentRow.length - 1] * 2;
                   currentRow[currentRow.length - 1] *= -2;
                 }
                 else {
@@ -187,8 +216,19 @@
           break;
         }
     }
-    put2ToRandomCell();
-    draw();
+    if(data.flat().includes(2048)){ // 승리조건
+      draw();
+      setTimeout(() => {
+        alert('2048 완성!');
+      }, 0);
+    }
+    else if(!data.flat().includes(0)){// 패배조건
+      alert(`${$score.textContent}점! 다시 도전하세요`);
+    }
+    else {
+      put2ToRandomCell();
+      draw();
+    }
   };
   
   window.addEventListener('keyup', (event) => {
@@ -210,6 +250,7 @@
   window.addEventListener('mousedown', (event) => {
     startCoord = [event.clientX, event.clientY];
   });
+  
   window.addEventListener('mouseup', (event) => {
     const endCoord = [event.clientX, event.clientY];
     const diffX = endCoord[0] - startCoord[0];
