@@ -53,7 +53,7 @@
   <div class="row">
     <div class="cell">
       <div class="hole"></div> 
-      <div class="gopher hidden"></div>
+      <div class="gopher hidden"></div> <!-- 한번에 여러개 클래스 등록 할 수 있다. -->
       <div class="bomb hidden"></div>
       <div class="hole-front"></div>
     </div>
@@ -111,5 +111,35 @@
     </div>
   </div>
 </div>
+<script>
+  const $timer = document.querySelector('#timer');
+  const $score = document.querySelector('#score');
+  const $start = document.querySelector('#start');
+  const $game = document.querySelector('#game');
+  const $$cells = document.querySelectorAll('.cell');
+
+  const holes = [0,0,0,0,0,0,0,0,0];
+  let started = false;
+  const score = 0;
+  $start.addEventListener('click',() => {
+    if(started) return;
+    started = true;
+    console.log('시작');
+    const tickId = setInterval(tick, 2000); // 1초 뒤에 실행
+    tick(); // 한번 더 호출하므로써 클릭하자 마자 바로 이벤트 실행됨
+  })
+
+  function tick(){
+    holes.forEach((hole, index) => {
+      const $gopher = $$cells[index].querySelector('.gopher');
+      holes[index] = setTimeout(() => {
+        $gopher.classList.add('hidden'); // class 명 추가          
+        holes[index] = 0;
+      }, 1000);
+      $gopher.classList.remove('hidden'); // gopher hidden 에서 hidden 을 제거. class명에 hidden 값이 있으면 제거
+    });
+  }
+
+</script>
 </body>
 </html>
