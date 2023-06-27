@@ -125,18 +125,34 @@
     if(started) return;
     started = true;
     console.log('시작');
-    const tickId = setInterval(tick, 2000); // 1초 뒤에 실행
+    const tickId = setInterval(tick, 1000); // 1초 뒤에 실행
     tick(); // 한번 더 호출하므로써 클릭하자 마자 바로 이벤트 실행됨
   })
 
+  // 두더지 30%, 폭탄20%, 공백50% -> 개발 편의를 위해 누적확률을 사용
+  let gopherPercent = 0.3;
+  let bombPercent = 0.5;
   function tick(){
     holes.forEach((hole, index) => {
-      const $gopher = $$cells[index].querySelector('.gopher');
-      holes[index] = setTimeout(() => {
-        $gopher.classList.add('hidden'); // class 명 추가          
-        holes[index] = 0;
-      }, 1000);
-      $gopher.classList.remove('hidden'); // gopher hidden 에서 hidden 을 제거. class명에 hidden 값이 있으면 제거
+      if(hole) return // 무언가의 이미지가 나타나고 있다면 return
+      //if(!$gopher.classList.contains('hidden')) return; // hidden 클래스를 포함하지 않으면 넘어간다.
+      const randomValue = Math.random();
+      if(randomValue < gopherPercent){
+        const $gopher = $$cells[index].querySelector('.gopher');
+        holes[index] = setTimeout(() => { // 참조관계(객체). hole로 표시하지 않는 이유. hole은 원시값이라 holes와 참조관계가 끊겨있음.
+          $gopher.classList.add('hidden'); // class 명 추가          
+          holes[index] = 0;
+        }, 1000);
+        $gopher.classList.remove('hidden'); // gopher hidden 에서 hidden 을 제거. class명에 hidden 값이 있으면 제거
+      }
+      else if (randomValue < bombPercent){
+        const $gopher = $$cells[index].querySelector('.bomb');
+        holes[index] = setTimeout(() => { // 참조관계(객체). hole로 표시하지 않는 이유. hole은 원시값이라 holes와 참조관계가 끊겨있음.
+          $gopher.classList.add('hidden'); // class 명 추가          
+          holes[index] = 0;
+        }, 1000);
+        $gopher.classList.remove('hidden'); // gopher hidden 에서 hidden 을 제거. class명에 hidden 값이 있으면 제거
+      }
     });
   }
 
